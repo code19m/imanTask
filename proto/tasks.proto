@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+option go_package = "/pb";
+
+message ScheduleCollectPostsRequest {
+    int32 start_page = 1;
+}
+  
+message ScheduleCollectPostsResponse {
+    string id = 1;
+}
+
+message GetTaskStateRequest {
+    string task_id = 1;
+}
+
+message GetTaskStateResponse {
+    string status = 1;
+}

@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+option go_package = "/pb";
+
+import "google/api/annotations.proto";
+import "tasks.proto";
+import "posts.proto";
+
+service TaskService {
+	rpc ScheduleCollectPosts (ScheduleCollectPostsRequest) returns (ScheduleCollectPostsResponse) {
+        option (google.api.http) = {
+            post: "/collect"
+            body: "*"
+        };
+    }
+	rpc GetTaskState(GetTaskStateRequest) returns (GetTaskStateResponse) {
+        option (google.api.http) = {
+            get: "/tasks/{task_id}"
+        };
+    }
+}
+
+service PostService {
+    rpc GetPosts(GetPostsRequest) returns (GetPostsResponse) {
+        option (google.api.http) = {
+            get: "/posts"
+        };
+    }
+    rpc GetPostById(GetPostByIdRequest) returns (GetPostByIdResponse) {
+        option (google.api.http) = {
+            get: "/posts/{id}"
+        };
+    }
+    rpc UpdatePost(UpdatePostRequest) returns (UpdatePostResponse) {
+        option (google.api.http) = {
+            put: "/posts/{id}"
+            body: "*"
+        };
+    }
+    rpc DeletePost(DeletePostRequest) returns (DeletePostResponse) {
+        option (google.api.http) = {
+            delete: "/posts/{id}"
+        };
+    }
+}
+
