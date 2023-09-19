@@ -1,0 +1,280 @@
+{
+  "collection": {
+    "info": {
+      "_postman_id": "a1bc1e81-27f1-4e61-818b-856f74c396bb",
+      "name": "Iman Task | Nuriddin",
+      "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+      "updatedAt": "2023-09-19T22:21:21.000Z",
+      "uid": "18845381-a1bc1e81-27f1-4e61-818b-856f74c396bb"
+    },
+    "item": [
+      {
+        "name": "Collect posts",
+        "event": [
+          {
+            "listen": "test",
+            "script": {
+              "id": "39bb4fd5-d090-4e02-bfe2-951a36f4768f",
+              "exec": [
+                "pm.test(\"Response status is 200\", function () {",
+                "    pm.response.to.have.status(200);",
+                "});",
+                "  ",
+                "pm.test(\"Body has id\", function () {",
+                "    var jsonData = pm.response.json();",
+                "    pm.expect(jsonData).to.have.property('id');",
+                "    pm.collectionVariables.set(\"task_id\", jsonData.id);",
+                "});"
+              ],
+              "type": "text/javascript"
+            }
+          }
+        ],
+        "id": "07510824-329f-43a6-9dcf-f3865abbcd10",
+        "protocolProfileBehavior": { "disableBodyPruning": true },
+        "request": {
+          "method": "POST",
+          "header": [],
+          "body": {
+            "mode": "raw",
+            "raw": "{\n    \"start_page\": 100\n}",
+            "options": { "raw": { "language": "json" } }
+          },
+          "url": {
+            "raw": "{{local}}/collect",
+            "host": ["{{local}}"],
+            "path": ["collect"]
+          }
+        },
+        "response": [],
+        "uid": "18845381-07510824-329f-43a6-9dcf-f3865abbcd10"
+      },
+      {
+        "name": "Get Task Status",
+        "event": [
+          {
+            "listen": "test",
+            "script": {
+              "id": "39bb4fd5-d090-4e02-bfe2-951a36f4768f",
+              "exec": [
+                "pm.test(\"Response status is 200\", function () {",
+                "    pm.response.to.have.status(200);",
+                "});",
+                "  ",
+                "pm.test(\"Body has status\", function () {",
+                "    var jsonData = pm.response.json();",
+                "    pm.expect(jsonData).to.have.property('status');",
+                "});"
+              ],
+              "type": "text/javascript"
+            }
+          }
+        ],
+        "id": "0eb5c770-a17a-4390-ac16-fb075239b55a",
+        "protocolProfileBehavior": { "disableBodyPruning": true },
+        "request": {
+          "method": "GET",
+          "header": [],
+          "body": {
+            "mode": "raw",
+            "raw": "",
+            "options": { "raw": { "language": "json" } }
+          },
+          "url": {
+            "raw": "{{local}}/tasks/{{task_id}}",
+            "host": ["{{local}}"],
+            "path": ["tasks", "{{task_id}}"]
+          }
+        },
+        "response": [],
+        "uid": "18845381-0eb5c770-a17a-4390-ac16-fb075239b55a"
+      },
+      {
+        "name": "Get Posts",
+        "event": [
+          {
+            "listen": "test",
+            "script": {
+              "id": "df520373-b293-4e5e-a363-20749e1a49e6",
+              "exec": [
+                "pm.test('Status code is 200', function () {",
+                "    pm.response.to.have.status(200);",
+                "});",
+                "",
+                "pm.test('Response body has posts as Array and length more than 0', function () {",
+                "    let jsonData = pm.response.json();",
+                "    if (jsonData.posts.length > 0) {",
+                "        let firstPost = jsonData.posts[0];",
+                "        pm.expect(firstPost).to.be.an('object');",
+                "        pm.expect(firstPost.id).to.be.a('number');",
+                "        pm.collectionVariables.set('post_id', firstPost.id);",
+                "    }",
+                "    pm.expect(jsonData.posts).to.be.an('array');",
+                "});"
+              ],
+              "type": "text/javascript"
+            }
+          }
+        ],
+        "id": "c5809939-e0a8-4b11-8cb2-f78f1bc018e0",
+        "protocolProfileBehavior": { "disableBodyPruning": true },
+        "request": {
+          "method": "GET",
+          "header": [],
+          "url": {
+            "raw": "{{local}}/posts?limit={{limit}}&offset={{offset}}",
+            "host": ["{{local}}"],
+            "path": ["posts"],
+            "query": [
+              { "key": "limit", "value": "{{limit}}" },
+              { "key": "offset", "value": "{{offset}}" }
+            ]
+          }
+        },
+        "response": [],
+        "uid": "18845381-c5809939-e0a8-4b11-8cb2-f78f1bc018e0"
+      },
+      {
+        "name": "Get Post by id",
+        "event": [
+          {
+            "listen": "test",
+            "script": {
+              "id": "df520373-b293-4e5e-a363-20749e1a49e6",
+              "exec": [
+                "pm.test(\"Response status is 200\", function () {",
+                "    pm.response.to.have.status(200);",
+                "});",
+                ""
+              ],
+              "type": "text/javascript"
+            }
+          }
+        ],
+        "id": "bef6f4b4-229c-418e-865d-7c72f2650059",
+        "protocolProfileBehavior": { "disableBodyPruning": true },
+        "request": {
+          "method": "GET",
+          "header": [],
+          "url": {
+            "raw": "{{local}}/posts/:id",
+            "host": ["{{local}}"],
+            "path": ["posts", ":id"],
+            "variable": [{ "key": "id", "value": "{{post_id}}" }]
+          }
+        },
+        "response": [],
+        "uid": "18845381-bef6f4b4-229c-418e-865d-7c72f2650059"
+      },
+      {
+        "name": "Update Post",
+        "event": [
+          {
+            "listen": "test",
+            "script": {
+              "id": "df520373-b293-4e5e-a363-20749e1a49e6",
+              "exec": [
+                "pm.test(\"Response status is 200\", function () {",
+                "    pm.response.to.have.status(200);",
+                "});",
+                "",
+                "pm.test(\"Body has success\", function() {",
+                "    var jsonData = pm.response.json();",
+                "    pm.expect(jsonData).to.have.property('success');",
+                "    pm.expect(jsonData.success).to.be.true;",
+                "})"
+              ],
+              "type": "text/javascript"
+            }
+          }
+        ],
+        "id": "f3d62098-d681-4a0c-98ea-e9f792d39f55",
+        "protocolProfileBehavior": { "disableBodyPruning": true },
+        "request": {
+          "method": "PUT",
+          "header": [],
+          "body": {
+            "mode": "raw",
+            "raw": "{\n    \"user_id\": 45,\n    \"title\": \"titlejon\",\n    \"body\": \"bodyjon\"\n}",
+            "options": { "raw": { "language": "json" } }
+          },
+          "url": {
+            "raw": "{{local}}/posts/:id",
+            "host": ["{{local}}"],
+            "path": ["posts", ":id"],
+            "variable": [{ "key": "id", "value": "{{post_id}}" }]
+          }
+        },
+        "response": [],
+        "uid": "18845381-f3d62098-d681-4a0c-98ea-e9f792d39f55"
+      },
+      {
+        "name": "Delete Post",
+        "event": [
+          {
+            "listen": "test",
+            "script": {
+              "id": "df520373-b293-4e5e-a363-20749e1a49e6",
+              "exec": [
+                "pm.test(\"Response status is 200\", function () {",
+                "    pm.response.to.have.status(200);",
+                "});",
+                "",
+                "pm.test(\"Body has success\", function() {",
+                "    var jsonData = pm.response.json();",
+                "    pm.expect(jsonData).to.have.property('success');",
+                "    pm.expect(jsonData.success).to.be.true;",
+                "})"
+              ],
+              "type": "text/javascript"
+            }
+          }
+        ],
+        "id": "5e7891be-508e-48a2-bd7f-81e840fb72f4",
+        "protocolProfileBehavior": { "disableBodyPruning": true },
+        "request": {
+          "method": "DELETE",
+          "header": [],
+          "body": {
+            "mode": "raw",
+            "raw": "",
+            "options": { "raw": { "language": "json" } }
+          },
+          "url": {
+            "raw": "{{local}}/posts/:id",
+            "host": ["{{local}}"],
+            "path": ["posts", ":id"],
+            "variable": [{ "key": "id", "value": "{{post_id}}" }]
+          }
+        },
+        "response": [],
+        "uid": "18845381-5e7891be-508e-48a2-bd7f-81e840fb72f4"
+      }
+    ],
+    "event": [
+      {
+        "listen": "prerequest",
+        "script": {
+          "id": "9a4db92c-3d09-41d6-8351-28ccc297cc9e",
+          "type": "text/javascript",
+          "exec": [""]
+        }
+      },
+      {
+        "listen": "test",
+        "script": {
+          "id": "4f1202de-2103-4a58-9d84-9f76a496fae6",
+          "type": "text/javascript",
+          "exec": [""]
+        }
+      }
+    ],
+    "variable": [
+      { "key": "local", "value": "http://localhost:8081", "type": "string" },
+      { "key": "task_id", "value": "", "type": "string" },
+      { "key": "limit", "value": "10", "type": "string" },
+      { "key": "offset", "value": "10", "type": "string" },
+      { "key": "post_id", "value": "" }
+    ]
+  }
+}
